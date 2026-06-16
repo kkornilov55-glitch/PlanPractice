@@ -1,3 +1,4 @@
 <Solution>
+  <Project Path="../Db/PlanPractice.Logic.csproj" Id="4246e6de-ca34-43a9-8e82-850c91ae3c7b" />
   <Project Path="PlanPractice.UI.csproj" />
 </Solution>

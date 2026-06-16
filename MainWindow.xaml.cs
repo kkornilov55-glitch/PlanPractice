@@ -8,6 +8,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.
 
 namespace PlanPractice.UI
 {
@@ -15,7 +16,7 @@ namespace PlanPractice.UI
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
-    {
+    {   
         public MainWindow()
         {
             InitializeComponent();
@@ -23,7 +24,7 @@ namespace PlanPractice.UI
 
         private void Connect_Button_Click(object sender, RoutedEventArgs e)
         {
-
+            
         }
 
         private void TablesTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
