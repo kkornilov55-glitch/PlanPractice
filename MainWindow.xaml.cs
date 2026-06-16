@@ -18,15 +18,26 @@ namespace PlanPractice.UI
     public partial class MainWindow : Window
     {   
         Db Db = new Db();
+        public List<string> TableNames { get; set; }
         public MainWindow()
         {
             InitializeComponent();
+
+            this.DataContext = this;
         }
 
         private void Connect_Button_Click(object sender, RoutedEventArgs e)
         {
             AuthWindow auth = new AuthWindow(Db);
-            auth.Show();
+            auth.Owner = this;
+
+            bool? DialogResult = auth.ShowDialog();
+            if (DialogResult == true)
+            {
+                TableNames = Db.GetListTableNames();
+                TablesTreeView.ItemsSource = null;
+                TablesTreeView.ItemsSource = TableNames;
+            }
         }
 
         private void TablesTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)

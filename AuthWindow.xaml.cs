@@ -27,7 +27,6 @@ namespace PlanPractice.UI
         {
             InitializeComponent();
             Db = db;
-
         }
 
         private void Action_Button_Click(object sender, RoutedEventArgs e)
@@ -52,6 +51,7 @@ namespace PlanPractice.UI
                 if (PasswordBox.Password.Length < MIN_PASSWORD_LENGHT)
                 {
                     MessageBox.Show("Минимальная длинна пароля 6 символов!", "Ошибка регистрации", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
                 }
 
                 if(Db.Register(login, password))
@@ -68,6 +68,7 @@ namespace PlanPractice.UI
                 if (Db.Login(login, password))
                 {
                     MessageBox.Show("Успешный вход в аккаунт!", "Вход в аккаунт", MessageBoxButton.OK, MessageBoxImage.Information);
+                    DialogResult = true;
                 }
                 else
                 {
