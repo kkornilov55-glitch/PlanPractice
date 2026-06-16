@@ -1,0 +1,120 @@
+﻿<Window x:Class="PlanPractice.UI.AuthWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Title="Вход в систему" Height="420" Width="320" 
+        WindowStartupLocation="CenterScreen" 
+        ResizeMode="NoResize"
+        Background="#F5F5F7">
+
+    <Window.Resources>
+        <Style x:Key="RoundedButton" TargetType="Button">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="RoundedTextBox" TargetType="TextBox">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        
+        <Border Background="#FAFAFA"
+                BorderBrush="#E0E0E0"
+                BorderThickness="1.7"
+                Padding="20,25"
+                Margin="15"
+                CornerRadius="6">
+
+            <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+
+                <!-- Заголовок с иконкой -->
+                <materialDesign:PackIcon x:Name="HeaderIcon" Kind="AccountCircle" Width="48" Height="48" Foreground="#007ACC" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+                <TextBlock x:Name="TitleText" Text="Авторизация" FontSize="18" FontWeight="SemiBold" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+
+                <!-- Поле Логин -->
+                <TextBlock Text="Логин:" Margin="0,0,0,5" FontSize="13" FontWeight="SemiBold"/>
+                <Grid Margin="0,0,0,12" Height="30">
+                    <Border CornerRadius="4" Background="White">
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="8" ShadowDepth="3" Direction="270" Opacity="0.30" Color="Black" />
+                        </Border.Effect>
+                    </Border>
+                    <Border BorderBrush="#CCCCCC" BorderThickness="1" CornerRadius="4" Background="White">
+                        <TextBox x:Name="LoginTextBox" VerticalAlignment="Center" Margin="5,0,5,0" BorderThickness="0" Style="{x:Null}"/>
+                    </Border>
+                </Grid>
+
+                <!-- Поле Пароль -->
+                <TextBlock Text="Пароль:" Margin="0,0,0,5" FontSize="13" FontWeight="SemiBold"/>
+                <Grid Margin="0,0,0,12" Height="30">
+                    <Border CornerRadius="4" Background="White">
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="8" ShadowDepth="3" Direction="270" Opacity="0.30" Color="Black" />
+                        </Border.Effect>
+                    </Border>
+                    <Border BorderBrush="#CCCCCC" BorderThickness="1" CornerRadius="4" Background="White">
+                        <PasswordBox x:Name="PasswordBox1" VerticalAlignment="Center" Margin="5,0,5,0" BorderThickness="0"/>
+                    </Border>
+                </Grid>
+
+                <!-- Поле Повторите пароль (Скрыто) -->
+                <StackPanel x:Name="RepeatPasswordPanel" Visibility="Collapsed">
+                    <TextBlock Text="Повторите пароль:" Margin="0,0,0,5" FontSize="13" FontWeight="SemiBold"/>
+                    <Grid Margin="0,0,0,12" Height="30">
+                        <Border CornerRadius="4" Background="White">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="8" ShadowDepth="3" Direction="270" Opacity="0.30" Color="Black" />
+                            </Border.Effect>
+                        </Border>
+                        <Border BorderBrush="#CCCCCC" BorderThickness="1" CornerRadius="4" Background="White">
+                            <PasswordBox x:Name="PasswordBox2" VerticalAlignment="Center" Margin="5,0,5,0" BorderThickness="0"/>
+                        </Border>
+                    </Grid>
+                </StackPanel>
+
+                <!-- Кнопка Входа/Регистрации -->
+                <Grid Height="35" Margin="0,10,0,10">
+                    <Border Background="#007ACC" CornerRadius="4">
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="8" ShadowDepth="3" Direction="270" Opacity="0.30" Color="#FF0300FF" />
+                        </Border.Effect>
+                    </Border>
+                    <Button x:Name="Action_Button" 
+                            Style="{StaticResource RoundedButton}" 
+                            Background="#007ACC" 
+                            Foreground="White" 
+                            Click="Action_Button_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon x:Name="ActionIcon" Kind="Login" Width="18" Height="18" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                            <TextBlock x:Name="ActionText" Text="Войти" VerticalAlignment="Center" FontSize="14" FontWeight="SemiBold"/>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+
+                <!-- Переключатель режима (Кнопка-ссылка) -->
+                <Button x:Name="ToggleMode_Button" Background="Transparent" BorderThickness="0" Foreground="#007ACC" Margin="0,5,0,0" Click="ToggleMode_Click" Style="{StaticResource RoundedButton}">
+                    <TextBlock x:Name="ToggleMode_Text" Text="Нет аккаунта? Зарегистрироваться" TextDecorations="Underline" FontSize="12"/>
+                </Button>
+
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>
