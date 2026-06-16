@@ -21,7 +21,7 @@ namespace PlanPractice.UI
     public partial class AuthWindow : Window
     {
         private bool isRegistrationMode = false;
-        private const int minPasswordLenght = 6;
+        private const int MIN_PASSWORD_LENGHT= 6;
         private Db Db;
         public AuthWindow(Db db)
         {
@@ -48,6 +48,10 @@ namespace PlanPractice.UI
                 {
                     MessageBox.Show("Пароли не совпадают!", "Ошибка регистрации", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
+                }
+                if (PasswordBox.Password.Length < MIN_PASSWORD_LENGHT)
+                {
+                    MessageBox.Show("Минимальная длинна пароля 6 символов!", "Ошибка регистрации", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
 
                 if(Db.Register(login, password))
