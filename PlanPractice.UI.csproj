@@ -17,6 +17,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Db\PlanPractice.Logic.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="data-server_9698555.png" />
   </ItemGroup>
 
