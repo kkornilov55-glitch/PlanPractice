@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Data;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -46,9 +47,10 @@ namespace PlanPractice.UI
         {
             string tableName = TablesTreeView.SelectedItem.ToString();
 
-            
+            //Вывод таблицы
+            DataTable dataTable = Db.GetDataTable(tableName);
+            MainDataGrid.ItemsSource = dataTable.DefaultView;
         }
-
         private void AddRow_Button_Click(object sender, RoutedEventArgs e)
         {
 
