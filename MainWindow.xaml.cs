@@ -34,6 +34,8 @@ namespace PlanPractice.UI
             bool? DialogResult = auth.ShowDialog();
             if (DialogResult == true)
             {
+                DataBaseName_TextBox.Text = "Plan";
+
                 TableNames = Db.GetListTableNames();
                 TablesTreeView.ItemsSource = null;
                 TablesTreeView.ItemsSource = TableNames;
@@ -42,7 +44,9 @@ namespace PlanPractice.UI
 
         private void TablesTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
+            string tableName = TablesTreeView.SelectedItem.ToString();
 
+            
         }
 
         private void AddRow_Button_Click(object sender, RoutedEventArgs e)
