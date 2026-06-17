@@ -73,7 +73,7 @@
                                  Margin="-4,0,-4,0" BorderThickness="0" FontSize="12" Style="{x:Null}"/>
                     </Border>
                 </Grid>
-                <Grid Width="140" Height="25">
+                <Grid x:Name ="ConnectButtonGrid" Width="140" Height="25">
 
                     <Border Background="#007ACC" CornerRadius="4">
                         <Border.Effect>
@@ -90,6 +90,27 @@
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="LinkVariant" Width="20" Height="20" Margin="0,0,4,0" VerticalAlignment="Center"/>
                             <TextBlock Text="Подключиться" VerticalAlignment="Center" FontSize="14" FontWeight="SemiBold" Margin="0,0,10,0"/>
+                        </StackPanel>
+
+                    </Button>
+
+                </Grid>
+                <Grid x:Name ="DisconnectButtonGrid" Width="140" Height="25" Visibility="Collapsed">
+
+                    <Border Background="#D32F2F" CornerRadius="4">
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="8" ShadowDepth="3" Direction="270" Opacity="0.30" Color="#FF8B0000" />
+                        </Border.Effect>
+                    </Border>
+
+                    <Button x:Name="Disconnect_Button" 
+                            Style="{StaticResource RoundedButton}" 
+                            Background="#D32F2F" 
+                            Foreground="White" Click="Disconnect_Button_Click">
+
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="LinkVariantOff" Width="20" Height="20" Margin="0,0,4,0" VerticalAlignment="Center"/>
+                            <TextBlock Text="Отключиться" VerticalAlignment="Center" FontSize="14" FontWeight="SemiBold" Margin="0,0,10,0"/>
                         </StackPanel>
 
                     </Button>

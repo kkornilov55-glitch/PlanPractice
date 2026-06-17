@@ -29,6 +29,10 @@ namespace PlanPractice.UI
 
         private void Connect_Button_Click(object sender, RoutedEventArgs e)
         {
+            Connect();
+        }
+        private void Connect()
+        {
             AuthWindow auth = new AuthWindow(Db);
             auth.Owner = this;
 
@@ -40,11 +44,28 @@ namespace PlanPractice.UI
                 TableNames = Db.GetListTableNames();
                 TablesTreeView.ItemsSource = null;
                 TablesTreeView.ItemsSource = TableNames;
+
+                ConnectButtonGrid.Visibility = Visibility.Collapsed;
+                DisconnectButtonGrid.Visibility = Visibility.Visible;
             }
         }
+        private void Disconnect_Button_Click(object sender, RoutedEventArgs e)
+        {
+            DataBaseName_TextBox.Text = string.Empty;
+            TablesTreeView.ItemsSource = null;
+            MainDataGrid.ItemsSource = null;
 
+            DisconnectButtonGrid.Visibility = Visibility.Collapsed;
+            ConnectButtonGrid.Visibility = Visibility.Visible;
+
+            MessageBoxResult result = MessageBox.Show("Произведено отключение от БД. Пожалуйста, авторизуйтесь повторно для продолжения работы!", "Отключение от БД", MessageBoxButton.OKCancel, MessageBoxImage.Information);
+            if (result == MessageBoxResult.OK)
+                Connect();
+
+        }
         private void TablesTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
+            if (TablesTreeView.SelectedItem == null) return;
             string tableName = TablesTreeView.SelectedItem.ToString();
 
             //Вывод таблицы
