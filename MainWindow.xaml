@@ -158,23 +158,88 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
+                <!-- Начало панельки кнопок -->
                 <Border Grid.Row="0"
                         Background="#FAFAFA"
                         BorderBrush="#E0E0E0"
                         BorderThickness="1.7"
                         CornerRadius="6">
                     <StackPanel Orientation="Horizontal">
-                        <StackPanel Orientation="Horizontal">
-                            <Button x:Name ="AddRow_Button"  Margin="10,0,5,0" Background="#FAFAFA" BorderThickness="0" Visibility="Hidden" Click="AddRow_Button_Click">
+
+                        <Grid Height="28" Margin="0,0,10,0">
+                            <Border Background="#4CAF50" CornerRadius="4">
+                                <Border.Effect>
+                                    <DropShadowEffect BlurRadius="6" ShadowDepth="2" Direction="270" Opacity="0.30" Color="#FF2E7D32" />
+                                </Border.Effect>
+                            </Border>
+                            <Button x:Name="AddRow_Button" 
+                                    Style="{StaticResource RoundedButton}" 
+                                    Background="#4CAF50" Foreground="White" Padding="10,0"
+                                    Click="AddRow_Button_Click">
                                 <StackPanel Orientation="Horizontal">
-                                    <materialDesign:PackIcon Kind="Add" VerticalAlignment="Center" Margin="0,0,5,0"/>
-                                    <TextBlock Text="Добавить запись"/>
+                                    <materialDesign:PackIcon Kind="PlusBox" Width="16" Height="16" Margin="3,0,5,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="Добавить" VerticalAlignment="Center" FontSize="13" FontWeight="SemiBold" Padding="0,0,5,0"/>
                                 </StackPanel>
                             </Button>
-                        </StackPanel>
+                        </Grid>
+
+                        <Grid Height="28" Margin="0,0,10,0">
+                            <Border Background="#007ACC" CornerRadius="4">
+                                <Border.Effect>
+                                    <DropShadowEffect BlurRadius="6" ShadowDepth="2" Direction="270" Opacity="0.30" Color="#FF0300FF" />
+                                </Border.Effect>
+                            </Border>
+                            <Button x:Name="EditRow_Button" 
+                                    Style="{StaticResource RoundedButton}" 
+                                    Background="#007ACC" Foreground="White" Padding="10,0"
+                                    Click="EditRow_Button_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="Pencil" Width="16" Height="16" Margin="3,0,5,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="Изменить" VerticalAlignment="Center" FontSize="13" FontWeight="SemiBold" Padding="0,0,5,0"/>
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+
+                        <Grid Height="28" Margin="0,0,15,0">
+                            <Border Background="#D32F2F" CornerRadius="4">
+                                <Border.Effect>
+                                    <DropShadowEffect BlurRadius="6" ShadowDepth="2" Direction="270" Opacity="0.30" Color="#FF8B0000" />
+                                </Border.Effect>
+                            </Border>
+                            <Button x:Name="DeleteRow_Button" 
+                                    Style="{StaticResource RoundedButton}" 
+                                    Background="#D32F2F" Foreground="White" Padding="10,0"
+                                    Click="DeleteRow_Button_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="TrashCan" Width="16" Height="16" Margin="3,0,5,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="Удалить запись" VerticalAlignment="Center" FontSize="13" FontWeight="SemiBold" Padding="0,0,5,0"/>
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+
+                        <Rectangle Width="1" Fill="#E0E0E0" Margin="0,2,15,2" />
+
+                        <Grid Height="28">
+                            <Border Background="#757575" CornerRadius="4">
+                                <Border.Effect>
+                                    <DropShadowEffect BlurRadius="6" ShadowDepth="2" Direction="270" Opacity="0.25" Color="#FF212121" />
+                                </Border.Effect>
+                            </Border>
+                            <Button x:Name="Refresh_Button" 
+                                    Style="{StaticResource RoundedButton}" 
+                                    Background="#757575" Foreground="White" Padding="10,0"
+                                    Click="Refresh_Button_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="Refresh" Width="16" Height="16" Margin="3,0,5,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="Обновить" VerticalAlignment="Center" FontSize="13" FontWeight="SemiBold" Padding="0,0,5,0"/>
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+
                     </StackPanel>
                 </Border>
 
+                <!-- Табличка -->
                 <Border Grid.Row="2"
                         Background="#FAFAFA"
                         BorderBrush="#E0E0E0"

@@ -72,7 +72,23 @@ namespace PlanPractice.UI
             DataTable dataTable = Db.GetDataTable(tableName);
             MainDataGrid.ItemsSource = dataTable.DefaultView;
         }
+
         private void AddRow_Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void EditRow_Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void DeleteRow_Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Refresh_Button_Click(object sender, RoutedEventArgs e)
         {
 
         }
