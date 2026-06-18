@@ -33,9 +33,9 @@ namespace PlanPractice.UI
         {
             if (CurrentTable == null) return;
 
-            foreach (DataColumn column in CurrentTable.Columns)
+            for (int i = 1; i < CurrentTable.Columns.Count; i++)
             {
-                if (column.AutoIncrement) continue;
+                DataColumn column = CurrentTable.Columns[i];
 
                 TextBlock label = new TextBlock
                 {
