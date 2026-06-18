@@ -109,12 +109,12 @@ namespace PlanPractice.UI
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-
+            DialogResult = false;
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-
+            DialogResult = true;
         }
     }
 }

@@ -56,7 +56,9 @@ namespace PlanPractice.UI
 
                 if(Db.Register(login, password))
                 {
-                    MessageBox.Show("Успешный вход в аккаунт!", "Регистрация", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show("Успешная регистрация аккаунта!", "Регистрация", MessageBoxButton.OK, MessageBoxImage.Information);
+                    Db.Login(login, password);
+                    DialogResult = true;
                 }
                 else
                 {
