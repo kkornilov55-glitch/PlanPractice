@@ -20,6 +20,7 @@ namespace PlanPractice.UI
     {   
         Db Db = new Db();
         public List<string> TableNames { get; set; }
+        private DataTable CurrentTable { get; set; }
         public MainWindow()
         {
             InitializeComponent();
@@ -47,16 +48,43 @@ namespace PlanPractice.UI
 
                 ConnectButtonGrid.Visibility = Visibility.Collapsed;
                 DisconnectButtonGrid.Visibility = Visibility.Visible;
+
+                ShowAvailableButtons();
             }
+        }
+        private void ShowAvailableButtons()
+        {
+            if (Db.CurrentRole == Db.UserRoles.Admin)
+            {
+                AddRow_Grid.Visibility = Visibility.Visible;
+                DeleteRow_Grid.Visibility = Visibility.Visible;
+                EditRow_Grid.Visibility = Visibility.Visible;
+            }
+            else if (Db.CurrentRole == Db.UserRoles.Manager)
+            {
+                AddRow_Grid.Visibility = Visibility.Visible;
+                EditRow_Grid.Visibility = Visibility.Visible;
+            }
+
+            Refresh_Grid.Visibility = Visibility.Visible;
         }
         private void Disconnect_Button_Click(object sender, RoutedEventArgs e)
         {
+            //Отчищаем данные предыдущего подключения к БД
             DataBaseName_TextBox.Text = string.Empty;
             TablesTreeView.ItemsSource = null;
             MainDataGrid.ItemsSource = null;
+            CurrentTable = null;
 
+            //Меняем кнопки местами
             DisconnectButtonGrid.Visibility = Visibility.Collapsed;
             ConnectButtonGrid.Visibility = Visibility.Visible;
+
+            //Прячем кнопки управления данными
+            AddRow_Grid.Visibility = Visibility.Collapsed;
+            DeleteRow_Grid.Visibility = Visibility.Collapsed;
+            EditRow_Grid.Visibility = Visibility.Collapsed;
+            Refresh_Grid.Visibility = Visibility.Collapsed;
 
             MessageBoxResult result = MessageBox.Show("Произведено отключение от БД. Пожалуйста, авторизуйтесь повторно для продолжения работы!", "Отключение от БД", MessageBoxButton.OKCancel, MessageBoxImage.Information);
             if (result == MessageBoxResult.OK)
@@ -69,13 +97,16 @@ namespace PlanPractice.UI
             string tableName = TablesTreeView.SelectedItem.ToString();
 
             //Вывод таблицы
-            DataTable dataTable = Db.GetDataTable(tableName);
-            MainDataGrid.ItemsSource = dataTable.DefaultView;
+            CurrentTable = Db.GetDataTable(tableName);
+            MainDataGrid.ItemsSource = CurrentTable.DefaultView;
         }
 
         private void AddRow_Button_Click(object sender, RoutedEventArgs e)
         {
+            if (CurrentTable == null) return;
 
+            AddRecordWindow addRecordWindow = new AddRecordWindow(CurrentTable);
+            addRecordWindow.ShowDialog();
         }
 
         private void EditRow_Button_Click(object sender, RoutedEventArgs e)

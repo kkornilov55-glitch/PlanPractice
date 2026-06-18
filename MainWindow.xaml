@@ -166,7 +166,7 @@
                         CornerRadius="6">
                     <StackPanel Orientation="Horizontal">
 
-                        <Grid Height="28" Margin="0,0,10,0">
+                        <Grid x:Name="AddRow_Grid" Height="28" Margin="0,0,10,0" Visibility="Collapsed">
                             <Border Background="#4CAF50" CornerRadius="4">
                                 <Border.Effect>
                                     <DropShadowEffect BlurRadius="6" ShadowDepth="2" Direction="270" Opacity="0.30" Color="#FF2E7D32" />
@@ -183,7 +183,7 @@
                             </Button>
                         </Grid>
 
-                        <Grid Height="28" Margin="0,0,10,0">
+                        <Grid x:Name="EditRow_Grid" Height="28" Margin="0,0,10,0" Visibility="Collapsed">
                             <Border Background="#007ACC" CornerRadius="4">
                                 <Border.Effect>
                                     <DropShadowEffect BlurRadius="6" ShadowDepth="2" Direction="270" Opacity="0.30" Color="#FF0300FF" />
@@ -200,7 +200,7 @@
                             </Button>
                         </Grid>
 
-                        <Grid Height="28" Margin="0,0,15,0">
+                        <Grid x:Name="DeleteRow_Grid" Height="28" Margin="0,0,15,0" Visibility="Collapsed">
                             <Border Background="#D32F2F" CornerRadius="4">
                                 <Border.Effect>
                                     <DropShadowEffect BlurRadius="6" ShadowDepth="2" Direction="270" Opacity="0.30" Color="#FF8B0000" />
@@ -219,7 +219,7 @@
 
                         <Rectangle Width="1" Fill="#E0E0E0" Margin="0,2,15,2" />
 
-                        <Grid Height="28">
+                        <Grid x:Name="Refresh_Grid" Height="28" Visibility="Collapsed">
                             <Border Background="#757575" CornerRadius="4">
                                 <Border.Effect>
                                     <DropShadowEffect BlurRadius="6" ShadowDepth="2" Direction="270" Opacity="0.25" Color="#FF212121" />

@@ -27,6 +27,7 @@ namespace PlanPractice.UI
         {
             InitializeComponent();
             CurrentTable = table;
+            GenerateInterface();
         }
         private void GenerateInterface()
         {
