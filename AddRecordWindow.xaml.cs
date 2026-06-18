@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.OleDb;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,6 +23,7 @@ namespace PlanPractice.UI
     public partial class AddRecordWindow : Window
     {
         private DataTable CurrentTable;
+        private OleDbConnection Connection;
         public Dictionary<string, string> ResultData = new Dictionary<string, string>();
         public AddRecordWindow(DataTable table)
         {
@@ -39,7 +41,7 @@ namespace PlanPractice.UI
 
                 TextBlock label = new TextBlock
                 {
-                    Text = column.ColumnName + ":",
+                    Text = column.ColumnName.StartsWith("ID")? GetTableNameFromExternalIdColumn(column.ColumnName) : column.ColumnName + ":",
                     FontWeight = FontWeights.SemiBold,
                     Margin = new Thickness(0, 5, 0, 3),
                     FontSize = 13
@@ -49,7 +51,9 @@ namespace PlanPractice.UI
 
                 if (column.ColumnName.StartsWith("ID"))
                 {
-                    string tableName = GetTableNameFromExternalIdColumn(column.ColumnName);
+                    string foreignTableName = GetTableNameFromExternalIdColumn(column.ColumnName);
+
+                    DataTable foreignTable = Db.GetDataTable(foreignTableName);
 
                     try
                     {
@@ -58,10 +62,10 @@ namespace PlanPractice.UI
                             Height = 25,
                             Margin = new Thickness(0, 0, 0, 12),
 
-                            ItemsSource = CurrentTable.DefaultView,
+                            ItemsSource = foreignTable.DefaultView,
 
-                            DisplayMemberPath = column.ColumnName,
-                            SelectedValuePath = column.ColumnName
+                            DisplayMemberPath = foreignTable.Columns[1].ColumnName,
+                            SelectedValuePath = foreignTable.Columns[0].ColumnName
                         };
 
                         FieldsPanel.Children.Add(comboBox);
@@ -86,9 +90,21 @@ namespace PlanPractice.UI
         }
         private string GetTableNameFromExternalIdColumn(string externalIdColumn)
         {
-            string tableName = externalIdColumn.Substring(3); //Название без ID, но с маленькой буквы
+            //Словарь внешних ключей и названий таблиц с которыми они связаны
+            Dictionary<string, string> tableMapper = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                { "ID роли", "Роли" },
+                { "ID подразделения", "Подразделения" },
+                { "ID продукции", "Продукция" },
+                { "ID сырья", "Сырье" },
+                { "ID энергоресурса", "Энергоресурсы" }
+            };
 
-            return char.ToUpper(tableName[0]) + tableName.Substring(1);
+            //string tableName = externalIdColumn.Substring(3); //Название без ID, но с маленькой буквы
+
+            //return char.ToUpper(tableName[0]) + tableName.Substring(1);
+
+            return tableMapper[externalIdColumn];
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
