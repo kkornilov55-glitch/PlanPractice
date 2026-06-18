@@ -166,7 +166,7 @@
                         CornerRadius="6">
                     <StackPanel Orientation="Horizontal">
 
-                        <Grid x:Name="AddRow_Grid" Height="28" Margin="0,0,10,0" Visibility="Collapsed">
+                        <Grid x:Name="AddRow_Grid" Height="28" Visibility="Collapsed" Margin="10 0 10 0">
                             <Border Background="#4CAF50" CornerRadius="4">
                                 <Border.Effect>
                                     <DropShadowEffect BlurRadius="6" ShadowDepth="2" Direction="270" Opacity="0.30" Color="#FF2E7D32" />
