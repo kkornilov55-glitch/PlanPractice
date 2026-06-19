@@ -19,9 +19,20 @@ namespace PlanPractice.UI
     /// </summary>
     public partial class DeleteWindow : Window
     {
-        public DeleteWindow()
+        public DeleteWindow(string recordDescription)
         {
             InitializeComponent();
+            RecordInfoText.Text = recordDescription;
+        }
+
+        private void ConfirmDeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = true;
+        }
+
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = false;
         }
     }
 }

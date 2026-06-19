@@ -141,7 +141,16 @@ namespace PlanPractice.UI
 
         private void DeleteRow_Button_Click(object sender, RoutedEventArgs e)
         {
+            DataRowView rowView = (DataRowView)MainDataGrid.SelectedItem;
+            DataRow row = rowView.Row;
 
+            string message = $"ID записи: {row[0]}";
+            DeleteWindow deleteWindow = new DeleteWindow(message);
+            bool? dialogResult = deleteWindow.ShowDialog();
+            if (dialogResult == true)
+            {
+                Db.DeleteRecord(CurrentTable, row, CurrentTableName);
+            }
         }
 
         private void Refresh_Button_Click(object sender, RoutedEventArgs e)
