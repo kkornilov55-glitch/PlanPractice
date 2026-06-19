@@ -1,0 +1,84 @@
+﻿<Window x:Class="PlanPractice.UI.DeleteWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Title="Подтверждение удаления" Height="350" Width="380" 
+        WindowStartupLocation="CenterOwner" 
+        ResizeMode="NoResize"
+        Background="#F5F5F7">
+    <Window.Resources>
+        <Style x:Key="RoundedButton" TargetType="Button">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Border Background="#FAFAFA"
+                BorderBrush="#E0E0E0"
+                BorderThickness="1.7"
+                Padding="20"
+                Margin="15"
+                CornerRadius="6">
+
+            <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+
+                <materialDesign:PackIcon Kind="AlertCircleOutline" Width="48" Height="48" Foreground="#D32F2F" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+
+                <TextBlock Text="Удаление записи" FontSize="18" FontWeight="SemiBold" Foreground="#333333" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+
+                <TextBlock Text="Вы действительно хотите безвозвратно удалить эти данные?" FontSize="13" TextWrapping="Wrap" TextAlignment="Center" Margin="0,0,0,10"/>
+
+                <Border Background="#FFF3F3" BorderBrush="#FFCDD2" BorderThickness="1" CornerRadius="4" Padding="10" Margin="0,0,0,20">
+                    <TextBlock x:Name="RecordInfoText" FontSize="13" FontWeight="Medium" Foreground="#B71C1C" HorizontalAlignment="Center" TextWrapping="Wrap"/>
+                </Border>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Button x:Name="CancelButton" 
+                            Grid.Column="0"
+                            Style="{StaticResource RoundedButton}" 
+                            Background="#E0E0E0" 
+                            Foreground="#333333" 
+                            Height="32"
+                            Click="CancelButton_Click">
+                        <TextBlock Text="Отмена" FontSize="13" FontWeight="SemiBold"/>
+                    </Button>
+
+                    <Grid Grid.Column="2" Height="32">
+                        <Border Background="#D32F2F" CornerRadius="4">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="8" ShadowDepth="3" Direction="270" Opacity="0.30" Color="#FF8B0000" />
+                            </Border.Effect>
+                        </Border>
+                        <Button x:Name="ConfirmDeleteButton" 
+                                Style="{StaticResource RoundedButton}" 
+                                Background="#D32F2F" 
+                                Foreground="White" 
+                                Click="ConfirmDeleteButton_Click"
+                                IsDefault="True">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="TrashCanOutline" Width="16" Height="16" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                                <TextBlock Text="Удалить" VerticalAlignment="Center" FontSize="13" FontWeight="SemiBold"/>
+                            </StackPanel>
+                        </Button>
+                    </Grid>
+                </Grid>
+
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>
