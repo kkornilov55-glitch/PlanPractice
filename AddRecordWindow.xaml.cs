@@ -23,7 +23,8 @@ namespace PlanPractice.UI
     public partial class AddRecordWindow : Window
     {
         private DataTable CurrentTable;
-        private OleDbConnection Connection;
+
+        private Dictionary<string, Control> RawData = new Dictionary<string, Control>();
         public Dictionary<string, string> ResultData = new Dictionary<string, string>();
         public AddRecordWindow(DataTable table)
         {
@@ -41,7 +42,7 @@ namespace PlanPractice.UI
 
                 TextBlock label = new TextBlock
                 {
-                    Text = column.ColumnName.StartsWith("ID")? GetTableNameFromExternalIdColumn(column.ColumnName) : column.ColumnName + ":",
+                    Text = column.ColumnName.StartsWith("ID")? GetTableNameFromExternalIdColumn(column.ColumnName): column.ColumnName,
                     FontWeight = FontWeights.SemiBold,
                     Margin = new Thickness(0, 5, 0, 3),
                     FontSize = 13
@@ -69,6 +70,7 @@ namespace PlanPractice.UI
                         };
 
                         FieldsPanel.Children.Add(comboBox);
+                        RawData[column.ColumnName] = comboBox;
 
                         continue;
                     }
@@ -86,6 +88,7 @@ namespace PlanPractice.UI
                 };
 
                 FieldsPanel.Children.Add(textBox);
+                RawData[label.Text] = textBox;
             }
         }
         private string GetTableNameFromExternalIdColumn(string externalIdColumn)
@@ -109,12 +112,33 @@ namespace PlanPractice.UI
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-            DialogResult = false;
+            this.Close();
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
+            GetResultData();
             DialogResult = true;
+        }
+        private void GetResultData()
+        {
+            //Пробегаемся по полям записи
+            foreach (string col in RawData.Keys)
+            {
+                //Определив какой Control в этом поле, получаем значение для сохранения в словарь строк(поле-данные)
+                string value = string.Empty;
+                if (RawData[col] is ComboBox cb)
+                {
+                    value = cb.SelectedValue.ToString();
+                }
+                else if (RawData[col] is TextBox tb)
+                {
+                    value = tb.Text;
+                }
+
+                //Сохраняем итоговую запись в словарь
+                ResultData[col] = value;
+            }
         }
     }
 }

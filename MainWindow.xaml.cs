@@ -21,6 +21,7 @@ namespace PlanPractice.UI
         Db Db = new Db();
         public List<string> TableNames { get; set; }
         private DataTable CurrentTable { get; set; }
+        private string CurrentTableName { get; set; }
         public MainWindow()
         {
             InitializeComponent();
@@ -94,10 +95,19 @@ namespace PlanPractice.UI
         private void TablesTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             if (TablesTreeView.SelectedItem == null) return;
-            string tableName = TablesTreeView.SelectedItem.ToString();
+            CurrentTableName = TablesTreeView.SelectedItem.ToString();
 
             //Вывод таблицы
-            CurrentTable = Db.GetDataTable(tableName);
+            RefreshTable();
+        }
+        private void RefreshTable()
+        {
+            CurrentTable = Db.GetDataTable(CurrentTableName);
+
+            //Сортировка записей по ID записи (По возрастанию)
+            string firstCol = CurrentTable.Columns[0].ColumnName;
+            CurrentTable.DefaultView.Sort = $"{firstCol} ASC";
+
             MainDataGrid.ItemsSource = CurrentTable.DefaultView;
         }
 
@@ -106,7 +116,22 @@ namespace PlanPractice.UI
             if (CurrentTable == null) return;
 
             AddRecordWindow addRecordWindow = new AddRecordWindow(CurrentTable);
-            addRecordWindow.ShowDialog();
+            addRecordWindow.Owner = this;
+
+            bool? dialogResult = addRecordWindow.ShowDialog();
+            if (dialogResult == true)
+            {
+                try
+                {
+                    Db.AddRecord(addRecordWindow.ResultData, CurrentTable, CurrentTableName);
+                }
+                catch (Exception ex)
+                {
+                    //Логирование ошибки
+                    MessageBox.Show("Не удалось добавить запись! Возможно, данные в полях имеют неверный тип.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            RefreshTable();
         }
 
         private void EditRow_Button_Click(object sender, RoutedEventArgs e)
@@ -121,7 +146,7 @@ namespace PlanPractice.UI
 
         private void Refresh_Button_Click(object sender, RoutedEventArgs e)
         {
-
+            RefreshTable();
         }
     }
 }
