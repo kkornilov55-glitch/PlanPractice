@@ -20,7 +20,7 @@
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
             <Button x:Name="CancelButton" Content="Отмена" Width="95" Margin="0,0,10,0" Background="#DDDDDD" Click="CancelButton_Click" FontSize="12"/>
-            <Button x:Name="SaveButton" Content="Сохранить" Width="95" Background="#007ACC" Foreground="White" Click="SaveButton_Click" FontSize="12"/>
+            <Button x:Name="SaveButton" Content="Сохранить" Width="95" Background="#007ACC" Foreground="White" Click="SaveButton_Click" FontSize="12" IsDefault="True"/>
         </StackPanel>
     </Grid>
 </Window>

@@ -23,13 +23,15 @@ namespace PlanPractice.UI
     public partial class AddRecordWindow : Window
     {
         private DataTable CurrentTable;
+        private DataRow CurrentRow;
 
         private Dictionary<string, Control> RawData = new Dictionary<string, Control>();
         public Dictionary<string, string> ResultData = new Dictionary<string, string>();
-        public AddRecordWindow(DataTable table)
+        public AddRecordWindow(DataTable table, DataRow row = null)
         {
             InitializeComponent();
             CurrentTable = table;
+            CurrentRow = row;
             GenerateInterface();
         }
         private void GenerateInterface()
@@ -39,10 +41,11 @@ namespace PlanPractice.UI
             for (int i = 1; i < CurrentTable.Columns.Count; i++)
             {
                 DataColumn column = CurrentTable.Columns[i];
+                string colName = column.ColumnName;
 
                 TextBlock label = new TextBlock
                 {
-                    Text = column.ColumnName.StartsWith("ID")? GetTableNameFromExternalIdColumn(column.ColumnName): column.ColumnName,
+                    Text = colName.StartsWith("ID")? GetTableNameFromExternalIdColumn(colName) : colName,
                     FontWeight = FontWeights.SemiBold,
                     Margin = new Thickness(0, 5, 0, 3),
                     FontSize = 13
@@ -50,9 +53,9 @@ namespace PlanPractice.UI
                 FieldsPanel.Children.Add(label);
 
 
-                if (column.ColumnName.StartsWith("ID"))
+                if (colName.StartsWith("ID"))
                 {
-                    string foreignTableName = GetTableNameFromExternalIdColumn(column.ColumnName);
+                    string foreignTableName = GetTableNameFromExternalIdColumn(colName);
 
                     DataTable foreignTable = Db.GetDataTable(foreignTableName);
 
@@ -70,7 +73,12 @@ namespace PlanPractice.UI
                         };
 
                         FieldsPanel.Children.Add(comboBox);
-                        RawData[column.ColumnName] = comboBox;
+                        RawData[colName] = comboBox;
+
+                        if (CurrentRow != null)
+                        {
+                            comboBox.SelectedValue = Convert.ToInt32(CurrentRow[colName]);
+                        }
 
                         continue;
                     }
@@ -88,7 +96,12 @@ namespace PlanPractice.UI
                 };
 
                 FieldsPanel.Children.Add(textBox);
-                RawData[label.Text] = textBox;
+                RawData[colName] = textBox;
+
+                if (CurrentRow != null)
+                {
+                    textBox.Text = CurrentRow[colName].ToString();
+                }
             }
         }
         private string GetTableNameFromExternalIdColumn(string externalIdColumn)

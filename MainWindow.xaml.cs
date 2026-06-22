@@ -136,7 +136,35 @@ namespace PlanPractice.UI
 
         private void EditRow_Button_Click(object sender, RoutedEventArgs e)
         {
+            if (CurrentTable == null) return;
 
+            //Получаем строчку для редактирования
+            if (MainDataGrid.SelectedItem == null)
+            {
+                MessageBox.Show("Пожалуйста, выберите запись для редактирования!", "Внимание", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return; // Прерываем выполнение
+            }
+            DataRowView rowView = (DataRowView)MainDataGrid.SelectedItem;
+            DataRow row = rowView.Row;
+
+            AddRecordWindow addRecordWindow = new AddRecordWindow(CurrentTable, row);
+            addRecordWindow.Title = "Редактирование записи";
+            addRecordWindow.Owner = this;
+
+            bool? dialogResult = addRecordWindow.ShowDialog();
+            if (dialogResult == true)
+            {
+                try
+                {
+                    Db.EditRecord(addRecordWindow.ResultData, CurrentTable, CurrentTableName, row);
+                }
+                catch (Exception ex)
+                {
+                    //Логирование ошибки
+                    MessageBox.Show("Не удалось редактировать запись! Возможно, данные в полях имеют неверный тип.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            RefreshTable();
         }
 
         private void DeleteRow_Button_Click(object sender, RoutedEventArgs e)
