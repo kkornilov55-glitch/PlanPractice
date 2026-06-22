@@ -67,6 +67,8 @@ namespace PlanPractice.UI
                 EditRow_Grid.Visibility = Visibility.Visible;
             }
 
+            QueriesAndReports_Grid.Visibility = Visibility.Visible;
+            QueriesAndReports_Separator.Visibility = Visibility.Visible;
             Refresh_Grid.Visibility = Visibility.Visible;
         }
         private void Disconnect_Button_Click(object sender, RoutedEventArgs e)
@@ -86,6 +88,10 @@ namespace PlanPractice.UI
             DeleteRow_Grid.Visibility = Visibility.Collapsed;
             EditRow_Grid.Visibility = Visibility.Collapsed;
             Refresh_Grid.Visibility = Visibility.Collapsed;
+
+            //Прячем кнопку открытия окна запросов и отчётов (А также разделитель между ней и списком таблиц)
+            QueriesAndReports_Grid.Visibility = Visibility.Collapsed;
+            QueriesAndReports_Separator.Visibility = Visibility.Collapsed;
 
             MessageBoxResult result = MessageBox.Show("Произведено отключение от БД. Пожалуйста, авторизуйтесь повторно для продолжения работы!", "Отключение от БД", MessageBoxButton.OKCancel, MessageBoxImage.Information);
             if (result == MessageBoxResult.OK)
@@ -184,6 +190,12 @@ namespace PlanPractice.UI
         private void Refresh_Button_Click(object sender, RoutedEventArgs e)
         {
             RefreshTable();
+        }
+
+        private void OpenQueriesWindow_Button_Click(object sender, RoutedEventArgs e)
+        {
+            QueriesWindow queriesWindow = new QueriesWindow();
+            queriesWindow.ShowDialog();        
         }
     }
 }

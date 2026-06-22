@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Plan.UI"
         mc:Ignorable="d"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        Title="Database Manager" Height="450" Width="800" Icon="/data-server_9698555.png">
+        Title="Database Manager" Height="475" Width="800" Icon="/data-server_9698555.png">
 
     <Window.Resources>
         <Style x:Key="RoundedButton" TargetType="Button">
@@ -149,6 +149,24 @@
                             </DataTemplate>
                         </TreeView.ItemTemplate>
                     </TreeView>
+
+                    <Separator x:Name ="QueriesAndReports_Separator" Margin="10,10,10,10" Background="#E0E0E0" Visibility="Collapsed"/>
+                    <Grid x:Name="QueriesAndReports_Grid" Height="28" Margin="10,0,10,15" Visibility="Collapsed">
+                        <Border Background="#FF37474F" CornerRadius="4">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="6" ShadowDepth="2" Direction="270" Opacity="0.30" Color="#FF512DA8" />
+                            </Border.Effect>
+                        </Border>
+                        <Button x:Name="OpenQueries_Button" 
+                                Style="{StaticResource RoundedButton}" 
+                                Background="#546E7A" Foreground="White" Padding="10,0"
+                                Click="OpenQueriesWindow_Button_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="ChartBar" Width="18" Height="18" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                                <TextBlock Text="Запросы и отчёты" VerticalAlignment="Center" FontSize="13" FontWeight="SemiBold"/>
+                            </StackPanel>
+                        </Button>
+                    </Grid>
                 </StackPanel>
             </Border>
             <Grid Grid.Column="2">

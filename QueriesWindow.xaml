@@ -1,0 +1,144 @@
+﻿<Window x:Class="PlanPractice.UI.QueriesWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Title="Запросы и отчёты" Height="550" Width="900" WindowStartupLocation="CenterOwner" Background="#FFFFFF">
+
+    <Window.Resources>
+        <Style x:Key="RoundedButton" TargetType="Button">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="15">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="320"/>
+            <ColumnDefinition Width="15"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Column="0" Background="#FAFAFA" BorderBrush="#E0E0E0" BorderThickness="1.7" CornerRadius="6" Padding="15">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="120"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
+                    <materialDesign:PackIcon Kind="DatabaseSearch" Height="18" Width="18" Margin="0,0,5,0" VerticalAlignment="Center" Foreground="#546E7A"/>
+                    <TextBlock Text="Готовые запросы" FontWeight="SemiBold" FontSize="14" VerticalAlignment="Center" Foreground="#333333"/>
+                </StackPanel>
+
+                <Border Grid.Row="1" BorderBrush="#E0E0E0" BorderThickness="1" CornerRadius="4" Background="White" Margin="0,0,0,15">
+                    <ListBox x:Name="PredefinedQueriesList" Padding="5" BorderThickness="0">
+                        <ListBoxItem Content="Полный список подразделений"/>
+                        <ListBoxItem Content="Продукция с руководителями"/>
+                        <ListBoxItem Content="Сырье на исходе"/>
+                    </ListBox>
+                </Border>
+
+                <Grid Grid.Row="2" Height="32" Margin="0,0,0,20">
+                    <Border Background="#546E7A" CornerRadius="4">
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="6" ShadowDepth="2" Direction="270" Opacity="0.30" Color="#FF37474F" />
+                        </Border.Effect>
+                    </Border>
+                    <Button x:Name="ExecutePredefined_Button" Style="{StaticResource RoundedButton}" Background="#546E7A" Foreground="White" Click="ExecutePredefined_Button_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Play" Width="18" Height="18" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                            <TextBlock Text="Выполнить" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+
+                <Rectangle Grid.Row="3" Height="1" Fill="#E0E0E0" Margin="0,0,0,20"/>
+
+                <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="0,0,0,10">
+                    <materialDesign:PackIcon Kind="CodeBraces" Height="18" Width="18" Margin="0,0,5,0" VerticalAlignment="Center" Foreground="#007ACC"/>
+                    <TextBlock Text="Свой SQL-запрос" FontWeight="SemiBold" FontSize="14" VerticalAlignment="Center" Foreground="#333333"/>
+                </StackPanel>
+
+                <Border Grid.Row="5" BorderBrush="#E0E0E0" BorderThickness="1" CornerRadius="4" Background="White" Margin="0,0,0,15">
+                    <TextBox x:Name="CustomSql_TextBox" TextWrapping="Wrap" AcceptsReturn="True" Padding="5" BorderThickness="0" Style="{x:Null}" FontFamily="Consolas" FontSize="13"/>
+                </Border>
+
+                <Grid Grid.Row="6" Height="32">
+                    <Border Background="#007ACC" CornerRadius="4">
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="6" ShadowDepth="2" Direction="270" Opacity="0.30" Color="#FF0300FF" />
+                        </Border.Effect>
+                    </Border>
+                    <Button x:Name="ExecuteCustom_Button" Style="{StaticResource RoundedButton}" Background="#007ACC" Foreground="White" Click="ExecuteCustom_Button_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="DatabaseArrowRight" Width="18" Height="18" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                            <TextBlock Text="Выполнить код" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="10"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <materialDesign:PackIcon Kind="TableSearch" Height="22" Width="22" Margin="0,0,5,0" VerticalAlignment="Center" Foreground="#333333"/>
+                    <TextBlock Text="Результат выборки" FontWeight="SemiBold" FontSize="15" VerticalAlignment="Center" Foreground="#333333"/>
+                </StackPanel>
+
+                <Grid Height="32" Width="160" HorizontalAlignment="Right">
+                    <Border Background="#4CAF50" CornerRadius="4">
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="6" ShadowDepth="2" Direction="270" Opacity="0.30" Color="#FF2E7D32" />
+                        </Border.Effect>
+                    </Border>
+                    <Button x:Name="ExportReport_Button" Style="{StaticResource RoundedButton}" Background="#4CAF50" Foreground="White" Click="ExportReport_Button_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="MicrosoftExcel" Width="18" Height="18" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                            <TextBlock Text="В Excel (CSV)" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </Grid>
+
+            <Border Grid.Row="2" Background="#FAFAFA" BorderBrush="#E0E0E0" BorderThickness="1.7" CornerRadius="6">
+                <DataGrid x:Name="QueryResultGrid" 
+                          Style="{StaticResource MaterialDesignDataGrid}" 
+                          AutoGenerateColumns="True" IsReadOnly="True" 
+                          HeadersVisibility="Column" CanUserAddRows="False" 
+                          CanUserReorderColumns="False" GridLinesVisibility="Horizontal" 
+                          HorizontalGridLinesBrush="#E0E0E0" BorderThickness="0" 
+                          Background="White" AlternatingRowBackground="#F8F9FA" 
+                          RowHeight="35" ColumnWidth="*">
+                    <DataGrid.ColumnHeaderStyle>
+                        <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}">
+                            <Setter Property="Background" Value="#EEEEEE" />
+                            <Setter Property="Foreground" Value="#333333" />
+                            <Setter Property="FontWeight" Value="SemiBold" />
+                            <Setter Property="Padding" Value="10,8" />
+                        </Style>
+                    </DataGrid.ColumnHeaderStyle>
+                </DataGrid>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>
