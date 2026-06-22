@@ -45,9 +45,11 @@
 
                 <Border Grid.Row="1" BorderBrush="#E0E0E0" BorderThickness="1" CornerRadius="4" Background="White" Margin="0,0,0,15">
                     <ListBox x:Name="PredefinedQueriesList" Padding="5" BorderThickness="0">
-                        <ListBoxItem Content="Полный список подразделений"/>
-                        <ListBoxItem Content="Продукция с руководителями"/>
-                        <ListBoxItem Content="Сырье на исходе"/>
+                        <ListBoxItem Content="Подробный список продукции"/>
+                        <ListBoxItem Content="Финансовый план производства"/>
+                        <ListBoxItem Content="Рецептура продукции"/>
+                        <ListBoxItem Content="Нагрузка на цеха"/>
+                        <ListBoxItem Content="Потребление энергии"/>
                     </ListBox>
                 </Border>
 

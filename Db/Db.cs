@@ -234,5 +234,28 @@ namespace PlanPractice.Logic
 
             UpdateTable(table, tableName);
         }
+
+        public static bool TryExecuteQuery(string query, ref DataTable dt)
+        {
+            using (OleDbConnection MyConnect = new OleDbConnection(ConnectionString))
+            {
+                MyConnect.Open();
+
+                OleDbCommand command = new OleDbCommand(query, MyConnect);
+
+                try
+                {
+                    using (OleDbDataAdapter adapter = new OleDbDataAdapter(command))
+                        adapter.Fill(dt);
+                }
+                catch (Exception ex)
+                {
+                    //Логировать
+
+                    return false;
+                }
+            }
+            return true;
+        }
     }
 }

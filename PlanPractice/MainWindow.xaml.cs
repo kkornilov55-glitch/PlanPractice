@@ -194,7 +194,7 @@ namespace PlanPractice.UI
 
         private void OpenQueriesWindow_Button_Click(object sender, RoutedEventArgs e)
         {
-            QueriesWindow queriesWindow = new QueriesWindow();
+            QueriesWindow queriesWindow = new QueriesWindow(Db);
             queriesWindow.ShowDialog();        
         }
     }
