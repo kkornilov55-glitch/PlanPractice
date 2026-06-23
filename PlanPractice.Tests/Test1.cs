@@ -143,5 +143,134 @@ namespace PlanPractice.Tests
             // Assert
             Assert.IsFalse(result, "Авторизация с пустыми данными должна провалиться.");
         }
+
+        [TestMethod]
+        public void Register_DuplicateLogin_ReturnsFalse()
+        {
+            // Arrange
+            string testUser = "DuplicateTest_" + DateTime.Now.Ticks;
+            string password = "TestPassword123";
+
+            try
+            {
+                //Первая успешная регистрация
+                bool firstTry = _dbManager.Register(testUser, password);
+                Assert.IsTrue(firstTry, "Первая регистрация уникального пользователя должна пройти успешно.");
+
+                //Попытка зарегистрировать тот же логин
+                bool secondTry = _dbManager.Register(testUser, "DifferentPassword456");
+
+                // Assert
+                Assert.IsFalse(secondTry, "Программа не должна позволять регистрацию с уже занятым логином.");
+            }
+            finally
+            {
+                //Уборка: удаляем тестового пользователя из базы
+                DataTable usersTable = new DataTable();
+                DataBaseManager.TryExecuteQuery("SELECT * FROM Пользователи", ref usersTable);
+                DataRow[] rows = usersTable.Select($"Логин = '{testUser}'");
+
+                if (rows.Length > 0)
+                {
+                    _dbManager.DeleteRecord(usersTable, rows[0], "Пользователи");
+                }
+            }
+        }
+        [TestMethod]
+        public void Login_WrongPassword_ReturnsFalse()
+        {
+            //Пытаемся войти под системным логином
+            string login = "Admin";
+            string wrongPassword = "DefinitelyWrongPassword!@#";
+
+            // Act
+            bool result = _dbManager.Login(login, wrongPassword);
+
+            // Assert
+            Assert.IsFalse(result, "Вход с неверным паролем или логином должен быть отклонен.");
+        }
+        [TestMethod]
+        public void GetListTableNames_GuestRole_HidesSystemTables()
+        {
+            // Arrange: Имитируем, что залогинился обычный Гость
+            _dbManager.CurrentRole = DataBaseManager.UserRoles.Guest;
+
+            // Act
+            List<string> tables = _dbManager.GetListTableNames();
+
+            // Assert
+            Assert.IsFalse(tables.Contains("Пользователи"), "Гость не должен видеть таблицу 'Пользователи'.");
+            Assert.IsFalse(tables.Contains("Роли"), "Гость не должен видеть таблицу 'Роли'.");
+            Assert.IsTrue(tables.Count > 0, "Гость должен видеть хотя бы какие-то производственные таблицы.");
+        }
+        [TestMethod]
+        public void GetListTableNames_AdminRole_ShowsAllTables()
+        {
+            // Arrange: Имитируем вход Администратора
+            _dbManager.CurrentRole = DataBaseManager.UserRoles.Admin;
+
+            // Act
+            List<string> tables = _dbManager.GetListTableNames();
+
+            // Assert
+            Assert.IsTrue(tables.Contains("Пользователи"), "Администратор должен видеть таблицу 'Пользователи'.");
+            Assert.IsTrue(tables.Contains("Роли"), "Администратор должен видеть таблицу 'Роли'.");
+        }
+        [TestMethod]
+        public void GetDataTable_ValidTableName_ReturnsFilledTable()
+        {
+            // Arrange
+            string tableName = "Роли"; // Базовая таблица, которая есть всегда
+
+            // Act
+            DataTable dt = DataBaseManager.GetDataTable(tableName);
+
+            // Assert
+            Assert.IsNotNull(dt, "Метод не должен возвращать null.");
+            Assert.IsTrue(dt.Columns.Contains("Роль"), "Таблица должна содержать колонку 'Роль', как в схеме БД.");
+            Assert.IsTrue(dt.Rows.Count > 0, "Таблица 'Роли' не должна быть пустой (в ней должны быть заложены системные роли).");
+        }
+        [TestMethod]
+        public void DeleteRecord_ValidRow_RemovesFromDatabase()
+        {
+            //Создаем временную строку специально для удаления
+            DataTable table = new DataTable();
+            DataBaseManager.TryExecuteQuery("SELECT * FROM Роли", ref table);
+
+            string testRole = "DELETE_TEST_" + DateTime.Now.Ticks;
+            Dictionary<string, string> newData = new Dictionary<string, string> { { "Роль", testRole } };
+
+            //Добавляем запись
+            _dbManager.AddRecord(newData, table, "Роли");
+
+            //Скачиваем свежую таблицу, чтобы у записи появился ID от базы данных
+            DataTable freshTable = new DataTable();
+            DataBaseManager.TryExecuteQuery("SELECT * FROM Роли", ref freshTable);
+            DataRow[] rowsToDelete = freshTable.Select($"Роль = '{testRole}'");
+
+            Assert.IsTrue(rowsToDelete.Length > 0, "Запись для теста удаления не была создана.");
+
+            //Вызываем метод удаления
+            _dbManager.DeleteRecord(freshTable, rowsToDelete[0], "Роли");
+
+            //Делаем запрос в базу, чтобы убедиться, что строки там больше нет
+            DataTable checkTable = new DataTable();
+            DataBaseManager.TryExecuteQuery($"SELECT * FROM Роли WHERE Роль = '{testRole}'", ref checkTable);
+
+            Assert.AreEqual(0, checkTable.Rows.Count, "Метод DeleteRecord не удалил запись из физической базы данных.");
+        }
+        [TestMethod]
+        public void Login_SqlInjectionAttempt_ReturnsFalse()
+        {
+            //Классическая хакерская атака, которая пытается обмануть логику базы
+            string injectionLogin = "Admin' OR '1'='1";
+            string anyPassword = "AnyRandomPassword";
+
+            // Act
+            bool result = _dbManager.Login(injectionLogin, anyPassword);
+
+            // Assert
+            Assert.IsFalse(result, "КРИТИЧЕСКАЯ УЯЗВИМОСТЬ! Система пропустила SQL-инъекцию при авторизации.");
+        }
     }
 }
