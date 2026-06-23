@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using PlanPractice.Logic;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -12,7 +14,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using PlanPractice.Logic;
+using System.Linq;
+using System.IO;
 
 namespace PlanPractice.UI
 {
@@ -29,12 +32,6 @@ namespace PlanPractice.UI
 
             this.DataContext = this;
         }
-
-        private void ExportReport_Button_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void ExecutePredefined_Button_Click(object sender, RoutedEventArgs e)
         {
             string query = string.Empty;
@@ -93,6 +90,57 @@ namespace PlanPractice.UI
             {
                 QueryResultGrid.ItemsSource = null;
                 MessageBox.Show("Запрос отклонён! ", "Ошибка выполнения запроса", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        private void ExportReport_Button_Click(object sender, RoutedEventArgs e)
+        {
+            DataView dataView = (DataView)QueryResultGrid.ItemsSource;
+            DataTable table = dataView.Table;
+
+            //Проверяем, есть ли вообще данные в таблице
+            if (QueryResultGrid.ItemsSource == null)
+            {
+                MessageBox.Show("Сначала выполните запрос, чтобы получить данные для отчёта!", "Внимание", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+            if (table.Rows.Count == 0)
+            {
+                MessageBox.Show("Таблица пуста, нечего экспортировать.", "Внимание", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            //Открываем окно сохранения файла
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "CSV файл|*.csv";
+            saveFileDialog.Title = "Сохранить отчёт";
+            saveFileDialog.FileName = "Отчет.csv";
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                try
+                {
+                    StringBuilder sb = new StringBuilder();
+                    //Формируем заголовки колонок (через точку с запятой)
+                    string[] columnNames = table.Columns.Cast<DataColumn>().Select(column => column.ColumnName).ToArray();
+                    sb.AppendLine(string.Join(";", columnNames));
+
+                    //Пробегаемся по всем строкам с данными
+                    foreach (DataRow row in table.Rows)
+                    {
+                        string[] fields = row.ItemArray.Select(field => field.ToString().Replace(";", ",")).ToArray();
+                        sb.AppendLine(string.Join(";", fields));
+                    }
+
+                    //Сохраняем файл
+                    File.WriteAllText(saveFileDialog.FileName, sb.ToString(), Encoding.UTF8);
+
+                    MessageBox.Show("Отчёт успешно сформирован и сохранен!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Ошибка при сохранении отчёта: " + ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
     }
