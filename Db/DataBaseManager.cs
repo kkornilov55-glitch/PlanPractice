@@ -9,7 +9,7 @@ namespace PlanPractice.Logic
 {
     public class DataBaseManager
     {
-        private const string ConnectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Main\Works\Labs\2_term\Practice\Plan.accdb;";
+        public string ConnectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=Plan.accdb;";
         public OleDbDataAdapter MyDataAdapter;
         public OleDbCommandBuilder MyBuilder;
 
