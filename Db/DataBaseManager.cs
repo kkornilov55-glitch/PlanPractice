@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using Plan.Logic;
+using System.Data;
 using System.Data.Common;
 using System.Data.OleDb;
 using System.Security.Cryptography;
@@ -6,10 +7,9 @@ using System.Text;
 
 namespace PlanPractice.Logic
 {
-    public class Db
+    public class DataBaseManager
     {
         private const string ConnectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Main\Works\Labs\2_term\Practice\Plan.accdb;";
-        //public OleDbConnection MyConnect;
         public OleDbDataAdapter MyDataAdapter;
         public OleDbCommandBuilder MyBuilder;
 
@@ -20,16 +20,6 @@ namespace PlanPractice.Logic
             Admin //Редактирование/удаление/добавление записей, все остальное также доступно
         }
         public UserRoles CurrentRole;
-        //public void OpenConnection()
-        //{
-        //    MyConnect = new OleDbConnection(ConnectionString);
-        //    MyConnect.Open();
-        //}
-        //public void CloseConnection()
-        //{
-        //    MyConnect.Dispose();
-        //}
-
         public bool Login(string login, string password)
         {
             using (OleDbConnection MyConnect = new OleDbConnection(ConnectionString))
@@ -250,8 +240,7 @@ namespace PlanPractice.Logic
                 }
                 catch (Exception ex)
                 {
-                    //Логировать
-
+                    Logger.ErrorLog(ex);
                     return false;
                 }
             }

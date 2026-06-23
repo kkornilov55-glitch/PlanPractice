@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PlanPractice.UI"
         mc:Ignorable="d"
-        Title="Добавление записи" Height="400" Width="300" WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
+        Title="Добавление записи" Height="400" Width="300" WindowStartupLocation="CenterOwner" ResizeMode="NoResize" Icon="/data-server_9698555.png">
 
     <Grid Margin="15">
         <Grid.RowDefinitions>

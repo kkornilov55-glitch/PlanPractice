@@ -57,7 +57,7 @@ namespace PlanPractice.UI
                 {
                     string foreignTableName = GetTableNameFromExternalIdColumn(colName);
 
-                    DataTable foreignTable = Db.GetDataTable(foreignTableName);
+                    DataTable foreignTable = DataBaseManager.GetDataTable(foreignTableName);
 
                     try
                     {

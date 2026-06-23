@@ -22,8 +22,8 @@ namespace PlanPractice.UI
     {
         private bool isRegistrationMode = false;
         private const int MIN_PASSWORD_LENGHT= 6;
-        private Db Db;
-        public AuthWindow(Db db)
+        private DataBaseManager Db;
+        public AuthWindow(DataBaseManager db)
         {
             InitializeComponent();
             Db = db;

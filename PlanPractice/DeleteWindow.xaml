@@ -5,7 +5,7 @@
         Title="Подтверждение удаления" Height="350" Width="380" 
         WindowStartupLocation="CenterOwner" 
         ResizeMode="NoResize"
-        Background="#F5F5F7">
+        Background="#F5F5F7" Icon="/data-server_9698555.png">
     <Window.Resources>
         <Style x:Key="RoundedButton" TargetType="Button">
             <Setter Property="BorderThickness" Value="0"/>
@@ -22,12 +22,16 @@
     </Window.Resources>
 
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="9*"/>
+            <ColumnDefinition Width="371*"/>
+        </Grid.ColumnDefinitions>
         <Border Background="#FAFAFA"
                 BorderBrush="#E0E0E0"
                 BorderThickness="1.7"
                 Padding="20"
-                Margin="15"
-                CornerRadius="6">
+                Margin="6,15,15,15"
+                CornerRadius="6" Grid.Column="1">
 
             <StackPanel Orientation="Vertical" VerticalAlignment="Center">
 

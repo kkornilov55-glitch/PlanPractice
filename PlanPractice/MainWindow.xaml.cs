@@ -9,6 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Plan.Logic;
 using PlanPractice.Logic;
 
 namespace PlanPractice.UI
@@ -18,7 +19,7 @@ namespace PlanPractice.UI
     /// </summary>
     public partial class MainWindow : Window
     {   
-        Db Db = new Db();
+        DataBaseManager Db = new DataBaseManager();
         public List<string> TableNames { get; set; }
         private DataTable CurrentTable { get; set; }
         private string CurrentTableName { get; set; }
@@ -55,13 +56,13 @@ namespace PlanPractice.UI
         }
         private void ShowAvailableButtons()
         {
-            if (Db.CurrentRole == Db.UserRoles.Admin)
+            if (Db.CurrentRole == DataBaseManager.UserRoles.Admin)
             {
                 AddRow_Grid.Visibility = Visibility.Visible;
                 DeleteRow_Grid.Visibility = Visibility.Visible;
                 EditRow_Grid.Visibility = Visibility.Visible;
             }
-            else if (Db.CurrentRole == Db.UserRoles.Manager)
+            else if (Db.CurrentRole == DataBaseManager.UserRoles.Manager)
             {
                 AddRow_Grid.Visibility = Visibility.Visible;
                 EditRow_Grid.Visibility = Visibility.Visible;
@@ -108,7 +109,7 @@ namespace PlanPractice.UI
         }
         private void RefreshTable()
         {
-            CurrentTable = Db.GetDataTable(CurrentTableName);
+            CurrentTable = DataBaseManager.GetDataTable(CurrentTableName);
 
             //Сортировка записей по ID записи (По возрастанию)
             string firstCol = CurrentTable.Columns[0].ColumnName;
@@ -133,7 +134,7 @@ namespace PlanPractice.UI
                 }
                 catch (Exception ex)
                 {
-                    //Логирование ошибки
+                    Logger.ErrorLog(ex);
                     MessageBox.Show("Не удалось добавить запись! Возможно, данные в полях имеют неверный тип.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
@@ -166,7 +167,7 @@ namespace PlanPractice.UI
                 }
                 catch (Exception ex)
                 {
-                    //Логирование ошибки
+                    Logger.ErrorLog(ex);
                     MessageBox.Show("Не удалось редактировать запись! Возможно, данные в полях имеют неверный тип.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }

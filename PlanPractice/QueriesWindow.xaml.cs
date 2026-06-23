@@ -24,8 +24,8 @@ namespace PlanPractice.UI
     /// </summary>
     public partial class QueriesWindow : Window
     {
-        private Db Db;
-        public QueriesWindow(Db db)
+        private DataBaseManager Db;
+        public QueriesWindow(DataBaseManager db)
         {
             InitializeComponent();
             Db = db;
@@ -81,7 +81,7 @@ namespace PlanPractice.UI
         {
             DataTable dt = new DataTable();
 
-            if (Db.TryExecuteQuery(query, ref dt))
+            if (DataBaseManager.TryExecuteQuery(query, ref dt))
             {
                 QueryResultGrid.ItemsSource = null;
                 QueryResultGrid.ItemsSource = dt.DefaultView;
@@ -95,7 +95,6 @@ namespace PlanPractice.UI
         private void ExportReport_Button_Click(object sender, RoutedEventArgs e)
         {
             DataView dataView = (DataView)QueryResultGrid.ItemsSource;
-            DataTable table = dataView.Table;
 
             //Проверяем, есть ли вообще данные в таблице
             if (QueryResultGrid.ItemsSource == null)
@@ -103,6 +102,8 @@ namespace PlanPractice.UI
                 MessageBox.Show("Сначала выполните запрос, чтобы получить данные для отчёта!", "Внимание", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
+
+            DataTable table = dataView.Table;
             if (table.Rows.Count == 0)
             {
                 MessageBox.Show("Таблица пуста, нечего экспортировать.", "Внимание", MessageBoxButton.OK, MessageBoxImage.Warning);

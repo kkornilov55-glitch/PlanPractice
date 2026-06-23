@@ -5,7 +5,7 @@
         Title="Вход в систему" Height="500" Width="420" 
         WindowStartupLocation="CenterScreen" 
         ResizeMode="NoResize"
-        Background="#F5F5F7">
+        Background="#F5F5F7" Icon="/data-server_9698555.png">
 
     <Window.Resources>
         <Style x:Key="RoundedButton" TargetType="Button">
