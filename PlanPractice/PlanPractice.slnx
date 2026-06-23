@@ -1,4 +1,5 @@
 <Solution>
   <Project Path="../Db/PlanPractice.Logic.csproj" Id="4246e6de-ca34-43a9-8e82-850c91ae3c7b" />
+  <Project Path="../PlanPractice.Tests/PlanPractice.Tests.csproj" Id="c28f990f-e719-4ba1-b352-9d5b41ba1b1f" />
   <Project Path="PlanPractice.UI.csproj" />
 </Solution>
