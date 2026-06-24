@@ -109,7 +109,37 @@ namespace PlanPractice.UI
         }
         private void RefreshTable()
         {
-            CurrentTable = DataBaseManager.GetDataTable(CurrentTableName);
+            if (CurrentTableName == "Продукция-сырье")
+            {
+                string query = @"SELECT [Продукция-сырье].[ID записи], 
+                                         Продукция.[Название продукции], 
+                                         Сырье.[Наименование сырья], 
+                                         [Продукция-сырье].[НП сырья] 
+                                  FROM ([Продукция-сырье] 
+                                  INNER JOIN Продукция ON [Продукция-сырье].[ID продукции] = Продукция.[ID продукции]) 
+                                  INNER JOIN Сырье ON [Продукция-сырье].[ID сырья] = Сырье.[ID сырья]";
+                DataTable dt = new DataTable();
+                DataBaseManager.TryExecuteQuery(query, ref dt);
+                CurrentTable = dt;
+            }
+            else if (CurrentTableName == "Продукция-энергоресурс")
+            {
+                string query = @"SELECT 
+                [Продукция-энергоресурс].[ID записи],
+                Продукция.[Название продукции], 
+                Энергоресурсы.[Энергоресурс], 
+                [Продукция-энергоресурс].[НП энергоресурса]
+                FROM ([Продукция-энергоресурс]
+                INNER JOIN Продукция ON [Продукция-энергоресурс].[ID продукции] = Продукция.[ID продукции])
+                INNER JOIN Энергоресурсы ON [Продукция-энергоресурс].[ID энергоресурса] = Энергоресурсы.[ID энергоресурса]";
+                DataTable dt = new DataTable();
+                DataBaseManager.TryExecuteQuery(query, ref dt);
+                CurrentTable = dt;
+            }
+            else
+            {
+                CurrentTable = DataBaseManager.GetDataTable(CurrentTableName);
+            }
 
             //Сортировка записей по ID записи (По возрастанию)
             string firstCol = CurrentTable.Columns[0].ColumnName;
@@ -122,7 +152,7 @@ namespace PlanPractice.UI
         {
             if (CurrentTable == null) return;
 
-            AddRecordWindow addRecordWindow = new AddRecordWindow(CurrentTable);
+            AddRecordWindow addRecordWindow = new AddRecordWindow(DataBaseManager.GetDataTable(CurrentTableName));
             addRecordWindow.Owner = this;
 
             bool? dialogResult = addRecordWindow.ShowDialog();
@@ -130,7 +160,7 @@ namespace PlanPractice.UI
             {
                 try
                 {
-                    Db.AddRecord(addRecordWindow.ResultData, CurrentTable, CurrentTableName);
+                    Db.AddRecord(addRecordWindow.ResultData, DataBaseManager.GetDataTable(CurrentTableName), CurrentTableName);
                 }
                 catch (Exception ex)
                 {
@@ -151,10 +181,21 @@ namespace PlanPractice.UI
                 MessageBox.Show("Пожалуйста, выберите запись для редактирования!", "Внимание", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return; // Прерываем выполнение
             }
-            DataRowView rowView = (DataRowView)MainDataGrid.SelectedItem;
-            DataRow row = rowView.Row;
 
-            AddRecordWindow addRecordWindow = new AddRecordWindow(CurrentTable, row);
+
+            DataRowView rowView = (DataRowView)MainDataGrid.SelectedItem;
+            string idColumnName = CurrentTable.Columns[0].ColumnName;
+            object recordId = rowView[0];
+
+            DataTable pureTable = DataBaseManager.GetDataTable(CurrentTableName);
+            DataRow pureRowToEdit = DataBaseManager.FindRowById(pureTable, idColumnName, recordId);
+            if (pureRowToEdit == null)
+            {
+                MessageBox.Show("Запись не найдена в базе данных!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            AddRecordWindow addRecordWindow = new AddRecordWindow(pureTable, pureRowToEdit);
             addRecordWindow.Title = "Редактирование записи";
             addRecordWindow.Owner = this;
 
@@ -163,7 +204,7 @@ namespace PlanPractice.UI
             {
                 try
                 {
-                    Db.EditRecord(addRecordWindow.ResultData, CurrentTable, CurrentTableName, row);
+                    Db.EditRecord(addRecordWindow.ResultData, pureTable, CurrentTableName, pureRowToEdit);
                 }
                 catch (Exception ex)
                 {
@@ -177,14 +218,27 @@ namespace PlanPractice.UI
         private void DeleteRow_Button_Click(object sender, RoutedEventArgs e)
         {
             DataRowView rowView = (DataRowView)MainDataGrid.SelectedItem;
-            DataRow row = rowView.Row;
+            if (rowView == null )
+            {
+                MessageBox.Show("Пожалуйста, выбирите запись для удаления!", "Внимание", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            string idColumnName = CurrentTable.Columns[0].ColumnName;
+            object recordId = rowView[0];
 
-            string message = $"ID записи: {row[0]}";
+            string message = $"ID записи: {recordId}";
             DeleteWindow deleteWindow = new DeleteWindow(message);
             bool? dialogResult = deleteWindow.ShowDialog();
             if (dialogResult == true)
             {
-                Db.DeleteRecord(CurrentTable, row, CurrentTableName);
+                DataTable pureTable = DataBaseManager.GetDataTable(CurrentTableName);
+                DataRow pureRowToDelete = DataBaseManager.FindRowById(pureTable, idColumnName, recordId);
+
+                if (pureRowToDelete != null)
+                {
+                    Db.DeleteRecord(pureTable, pureRowToDelete, CurrentTableName);
+                    RefreshTable();
+                }
             }
         }
 

@@ -180,6 +180,14 @@ namespace PlanPractice.Logic
             }
             return dt;   
         }
+        public static DataRow FindRowById(DataTable table, string idColumnName, object idValue)
+        {
+            string filter = $"[{idColumnName}] = {idValue}";
+
+            DataRow[] foundRows = table.Select(filter);
+
+            return foundRows.Length > 0 ? foundRows[0] : null;
+        }
         private void UpdateTable(DataTable table, string tableName)
         {
             using (OleDbConnection MyConnect = new OleDbConnection(ConnectionString))
