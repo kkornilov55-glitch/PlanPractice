@@ -71,6 +71,7 @@ namespace PlanPractice.UI
                             DisplayMemberPath = foreignTable.Columns[1].ColumnName,
                             SelectedValuePath = foreignTable.Columns[0].ColumnName
                         };
+                        comboBox.SelectedIndex = 0;
 
                         FieldsPanel.Children.Add(comboBox);
                         RawData[colName] = comboBox;
@@ -131,6 +132,14 @@ namespace PlanPractice.UI
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             GetResultData();
+            foreach (var data in ResultData)
+            {
+                if (string.IsNullOrEmpty(data.Value))
+                {
+                    MessageBox.Show("Перед сохранением записи заполните все поля!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+            }
             DialogResult = true;
         }
         private void GetResultData()
