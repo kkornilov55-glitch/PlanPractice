@@ -116,7 +116,8 @@
                     <Button x:Name="ExportReport_Button" Style="{StaticResource RoundedButton}" Background="#4CAF50" Foreground="White" Click="ExportReport_Button_Click">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="MicrosoftExcel" Width="18" Height="18" Margin="0,0,5,0" VerticalAlignment="Center"/>
-                            <TextBlock Text="В Excel (CSV)" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                            <materialDesign:PackIcon Kind="MicrosoftWord" Width="18" Height="18" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                            <TextBlock Text="Экспорт" VerticalAlignment="Center" FontWeight="SemiBold"/>
                         </StackPanel>
                     </Button>
                 </Grid>
